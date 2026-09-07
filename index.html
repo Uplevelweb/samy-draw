@@ -115,11 +115,34 @@
   }
   #toolbar.visible{display:block;}
   .row{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
-  .swatch{
-    width:34px;height:34px;border-radius:50%;border:3px solid #ffffffcc;
-    box-shadow:0 2px 0 rgba(46,42,74,0.15);cursor:pointer;flex-shrink:0;
+  .palette-tray{
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    background:#c0c0c0;border:2px solid #808080;border-top-color:#fff;border-left-color:#fff;
+    border-radius:6px;padding:8px 10px;margin:0 auto 8px;width:fit-content;max-width:100%;
+    box-shadow:1px 1px 0 #000 inset;
   }
-  .swatch.selected{border-color:var(--ink);transform:scale(1.15);}
+  .current-color{
+    position:relative;width:38px;height:38px;flex-shrink:0;
+  }
+  .current-color .back{
+    position:absolute;right:0;bottom:0;width:26px;height:26px;
+    border:2px solid #808080;border-top-color:#404040;border-left-color:#404040;
+    background:#fff;
+  }
+  .current-color .front{
+    position:absolute;left:0;top:0;width:26px;height:26px;
+    border:2px solid #fff;border-top-color:#404040;border-left-color:#404040;
+    background:var(--ink);
+  }
+  .swatch-grid{
+    display:grid;grid-template-columns:repeat(5,1fr);gap:4px;
+  }
+  .swatch{
+    width:40px;height:40px;border-radius:3px;
+    border:3px outset #eee;
+    cursor:pointer;flex-shrink:0;
+  }
+  .swatch.selected{border-style:inset;box-shadow:0 0 0 2px var(--ink) inset;}
   .tool{
     border:none;border-radius:14px;background:#ffffffcc;padding:9px 12px;
     font-size:20px;line-height:1;cursor:pointer;box-shadow:0 3px 0 rgba(46,42,74,0.15);
@@ -255,7 +278,12 @@
   </div>
 
   <div id="toolbar">
-    <div class="row" id="paletteRow"></div>
+    <div class="row">
+      <div class="palette-tray">
+        <div class="current-color"><div class="back"></div><div class="front" id="currentColorPreview"></div></div>
+        <div class="swatch-grid" id="paletteRow"></div>
+      </div>
+    </div>
     <div class="row">
       <button class="tool" id="brushTool" title="Pincel">🖌️</button>
       <button class="tool" id="bucketTool" title="Rellenar">🪣</button>
@@ -407,12 +435,15 @@
 
   // ---------- palette / toolbar ----------
   const paletteRow = document.getElementById('paletteRow');
+  const currentColorPreview = document.getElementById('currentColorPreview');
+  currentColorPreview.style.background = currentColor;
   colors.forEach(c=>{
     const sw = document.createElement('div');
     sw.className='swatch'+(c===currentColor?' selected':'');
     sw.style.background=c;
     sw.addEventListener('click',()=>{
       currentColor=c;
+      currentColorPreview.style.background=c;
       currentTool = currentTool==='eraser' ? 'brush' : currentTool;
       document.querySelectorAll('.swatch').forEach(s=>s.classList.remove('selected'));
       sw.classList.add('selected');
