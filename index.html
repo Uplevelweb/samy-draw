@@ -124,21 +124,31 @@
   @media (min-width: 700px){
     html,body{overflow:auto;}
     body{
-      display:flex;align-items:flex-start;justify-content:center;
+      display:flex;align-items:center;justify-content:center;
       background:linear-gradient(135deg,#9fd8ff 0%, #d9c9ff 100%);
-      padding:24px 0;
+      padding:16px 0;
     }
     #app{
-      max-width:480px;width:100%;height:auto;min-height:88vh;
+      max-width:620px;width:94vw;height:96vh;max-height:1000px;
       background:linear-gradient(180deg,var(--sky-top) 0%,var(--sky-bottom) 100%);
       border-radius:28px;box-shadow:0 20px 60px rgba(30,20,60,0.35);
+      display:flex;flex-direction:column;
     }
-    header{padding:14px 12px 6px;}
-    .group-photo{width:100px;}
-    .brand{font-size:18px;gap:8px;}
-    #canvasWrap{padding:4px 10px;min-height:60vh;}
-    #drawCanvas{max-height:65vh;}
-    #gallery{min-height:0;}
+    /* single compact row: photo + title on the left, mode buttons on the right */
+    header{
+      flex-direction:row;justify-content:space-between;align-items:center;
+      padding:14px 20px;gap:10px;
+    }
+    .group-photo{width:56px;border-radius:12px;}
+    .brand{font-size:20px;gap:8px;}
+    .modebar{gap:8px;}
+    .modebtn{padding:9px 16px;font-size:15px;}
+    #canvasWrap{padding:4px 16px;min-height:0;flex:1 1 auto;}
+    #drawCanvas{max-height:100%;}
+    #gallery{min-height:0;padding:8px 20px 16px;}
+    .grid{max-width:560px;}
+    #toolbar{padding:6px 16px 14px;flex-shrink:0;}
+    .row{margin-bottom:6px;}
   }
 </style>
 </head>
